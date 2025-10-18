@@ -1,4 +1,5 @@
-# Update backend/app/main.py
+# Open backend/app/main.py
+# Add investments router
 
 from fastapi import FastAPI, Request, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,7 +9,9 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from app.core.config import settings
 from app.database import engine, Base
-from app.routes import auth, expenses
+from app.routes import auth, expenses, investments,dashboard
+from app.models import User, Expense, Investment
+from app.routes import export as export
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -16,8 +19,8 @@ Base.metadata.create_all(bind=engine)
 # Create FastAPI app
 app = FastAPI(
     title=settings.APP_NAME,
-    description="Personal Wealth Management System",
-    version="1.0.0"
+    description="Personal Wealth Management System - Track Expenses & Investments",
+    version="2.0.0"  # Update version
 )
 
 # Configure CORS
@@ -66,12 +69,16 @@ async def general_exception_handler(request: Request, exc: Exception):
 # Include routers
 app.include_router(auth.router)
 app.include_router(expenses.router)
+app.include_router(investments.router)  
+app.include_router(dashboard.router)
+app.include_router(export.router)
 
 @app.get("/")
 def root():
     return {
         "message": "Welcome to WealthTrack API",
-        "version": "1.0.0",
+        "version": "2.0.0",
+        "features": ["Expense Tracking", "Investment Portfolio Management"],
         "docs": "/docs",
         "health": "/health"
     }
@@ -80,6 +87,6 @@ def root():
 def health_check():
     return {
         "status": "healthy",
-        "version": "1.0.0",
+        "version": "2.0.0",
         "database": "connected"
     }

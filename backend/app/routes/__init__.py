@@ -1,5 +1,5 @@
-# Open backend/app/routes/__init__.py
+# Update backend/app/routes/__init__.py
 
-from app.routes import auth, expenses
+from app.routes import auth, expenses, investments, dashboard, export
 
-__all__ = ["auth", "expenses"]
+__all__ = ["auth", "expenses", "investments", "dashboard", "export"]

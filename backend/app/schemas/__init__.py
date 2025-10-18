@@ -3,6 +3,15 @@
 from app.schemas.user import UserCreate, UserLogin, UserResponse, UserUpdate
 from app.schemas.token import Token, TokenData
 from app.schemas.expense import ExpenseCreate, ExpenseUpdate, ExpenseResponse, ExpenseListResponse
+from app.schemas.investment import (
+    InvestmentCreate,
+    InvestmentUpdate,
+    InvestmentResponse,
+    PriceUpdate,
+    PortfolioSummary,
+    InvestmentListResponse,
+    ASSET_TYPES
+)
 
 __all__ = [
     "UserCreate",
@@ -14,5 +23,12 @@ __all__ = [
     "ExpenseCreate",
     "ExpenseUpdate",
     "ExpenseResponse",
-    "ExpenseListResponse"
+    "ExpenseListResponse",
+    "InvestmentCreate",
+    "InvestmentUpdate",
+    "InvestmentResponse",
+    "PriceUpdate",
+    "PortfolioSummary",
+    "InvestmentListResponse",
+    "ASSET_TYPES"
 ]

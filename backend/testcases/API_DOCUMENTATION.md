@@ -517,3 +517,335 @@ curl "http://localhost:8000/api/expenses/summary/by-category" \
 ---
 
 _Last Updated: January 13, 2025_
+
+# Create file: backend/INVESTMENT_API_DOCS.md
+
+# 📈 Investment Tracker API Documentation
+
+## Base URL
+
+```
+http://localhost:8000
+```
+
+## Authentication
+
+All endpoints require JWT token:
+
+```
+Authorization: Bearer <your_access_token>
+```
+
+---
+
+## Investment Endpoints
+
+### 1. Create Investment
+
+**POST** `/api/investments/`
+
+Create a new investment.
+
+**Request Body:**
+
+```json
+{
+  "asset_type": "Stock",
+  "asset_name": "Reliance Industries",
+  "symbol": "RELIANCE",
+  "quantity": 20,
+  "purchase_price": 2400.0,
+  "current_price": 2650.0,
+  "purchase_date": "2024-06-15",
+  "maturity_date": null,
+  "platform": "Zerodha",
+  "interest_rate": null,
+  "notes": "Long term investment"
+}
+```
+
+**Asset Types:**
+
+- Stock
+- MutualFund
+- FD
+- Gold
+- Crypto
+- Bond
+- Other
+
+**Response (201 Created):**
+
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "user_id": "user-uuid",
+  "asset_type": "Stock",
+  "asset_name": "Reliance Industries",
+  "symbol": "RELIANCE",
+  "quantity": 20,
+  "purchase_price": 2400.0,
+  "current_price": 2650.0,
+  "purchase_date": "2024-06-15",
+  "platform": "Zerodha",
+  "notes": "Long term investment",
+  "invested_amount": 48000.0,
+  "current_value": 53000.0,
+  "absolute_gain": 5000.0,
+  "percentage_gain": 10.42,
+  "days_held": 120,
+  "is_matured": false,
+  "created_at": "2024-10-16T10:00:00Z"
+}
+```
+
+---
+
+### 2. Get All Investments
+
+**GET** `/api/investments/`
+
+Get list of investments with portfolio summary.
+
+**Query Parameters:**
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| skip | integer | Records to skip (default: 0) |
+| limit | integer | Max records (default: 100) |
+| asset_type | string | Filter by asset type |
+| platform | string | Filter by platform |
+
+**Response (200 OK):**
+
+```json
+{
+  "investments": [...],
+  "total_count": 15,
+  "portfolio_summary": {
+    "total_invested": 500000.00,
+    "total_current_value": 575000.00,
+    "total_gain_loss": 75000.00,
+    "total_gain_loss_percentage": 15.00,
+    "total_investments": 15,
+    "asset_type_breakdown": [...]
+  }
+}
+```
+
+---
+
+### 3. Update Investment Price
+
+**PATCH** `/api/investments/{investment_id}/price`
+
+Quick update of current price.
+
+**Request Body:**
+
+```json
+{
+  "current_price": 2750.0
+}
+```
+
+---
+
+### 4. Bulk Update Prices
+
+**POST** `/api/investments/bulk-update-prices`
+
+Update multiple investment prices at once.
+
+**Request Body:**
+
+```json
+{
+  "updates": [
+    { "id": "uuid-1", "current_price": 2750.0 },
+    { "id": "uuid-2", "current_price": 180.5 }
+  ]
+}
+```
+
+---
+
+## Analytics Endpoints
+
+### 1. Asset Allocation
+
+**GET** `/api/investments/analytics/asset-allocation`
+
+Get portfolio distribution by asset type.
+
+**Response:**
+
+```json
+[
+  {
+    "asset_type": "Stock",
+    "value": 300000.0,
+    "percentage": 52.17
+  },
+  {
+    "asset_type": "MutualFund",
+    "value": 150000.0,
+    "percentage": 26.09
+  }
+]
+```
+
+---
+
+### 2. Top Performers
+
+**GET** `/api/investments/analytics/top-performers?limit=5`
+
+Get best performing investments.
+
+---
+
+### 3. Platform Summary
+
+**GET** `/api/investments/analytics/platform-summary`
+
+Get investment summary grouped by platform.
+
+---
+
+### 4. Investment Statistics
+
+**GET** `/api/investments/analytics/statistics`
+
+Get detailed statistics including win rate, best/worst performers, etc.
+
+---
+
+## Dashboard Endpoints
+
+### 1. Complete Dashboard
+
+**GET** `/api/dashboard/`
+
+Get combined view of expenses and investments.
+
+**Response:**
+
+```json
+{
+  "summary": {
+    "net_worth": 575000.00,
+    "total_invested": 500000.00,
+    "investment_gains": 75000.00,
+    "investment_gains_percentage": 15.00,
+    "current_month_expenses": 25000.00,
+    "total_investments": 15
+  },
+  "expenses": {...},
+  "investments": {...},
+  "month_overview": {...}
+}
+```
+
+---
+
+### 2. Financial Health Score
+
+**GET** `/api/dashboard/health-score`
+
+Get financial health assessment with recommendations.
+
+**Response:**
+
+```json
+{
+  "score": 75,
+  "rating": "Good",
+  "color": "blue",
+  "issues": ["Low investment diversity"],
+  "recommendations": ["Consider diversifying across more asset types"]
+}
+```
+
+---
+
+## Export Endpoints
+
+### 1. Export Expenses CSV
+
+**GET** `/api/export/expenses/csv`
+
+Download expenses as CSV file.
+
+---
+
+### 2. Export Investments CSV
+
+**GET** `/api/export/investments/csv`
+
+Download investments as CSV file.
+
+---
+
+### 3. Export Complete Data
+
+**GET** `/api/export/complete`
+
+Export all financial data as JSON.
+
+---
+
+## Example Workflows
+
+### Workflow 1: Track New Stock Purchase
+
+```bash
+# 1. Buy stock
+curl -X POST "http://localhost:8000/api/investments/" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "asset_type": "Stock",
+    "asset_name": "TCS",
+    "symbol": "TCS",
+    "quantity": 10,
+    "purchase_price": 3500.00,
+    "current_price": 3500.00,
+    "purchase_date": "2024-10-16",
+    "platform": "Zerodha"
+  }'
+
+# 2. Update price daily
+curl -X PATCH "http://localhost:8000/api/investments/{id}/price" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"current_price": 3550.00}'
+
+# 3. Check performance
+curl "http://localhost:8000/api/investments/analytics/top-performers" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+---
+
+### Workflow 2: Monthly Portfolio Review
+
+```bash
+# 1. Get complete dashboard
+curl "http://localhost:8000/api/dashboard/" \
+  -H "Authorization: Bearer $TOKEN"
+
+# 2. Check health score
+curl "http://localhost:8000/api/dashboard/health-score" \
+  -H "Authorization: Bearer $TOKEN"
+
+# 3. Review asset allocation
+curl "http://localhost:8000/api/investments/analytics/asset-allocation" \
+  -H "Authorization: Bearer $TOKEN"
+
+# 4. Export data for records
+curl "http://localhost:8000/api/export/complete" \
+  -H "Authorization: Bearer $TOKEN" > portfolio_backup.json
+```
+
+---
+
+_Last Updated: October 16, 2025_

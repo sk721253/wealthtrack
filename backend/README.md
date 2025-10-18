@@ -1,26 +1,40 @@
+# Update backend/README.md
+
 # 💰 WealthTrack - Personal Wealth Management System
 
-A comprehensive personal finance platform to track expenses, investments, and build wealth with AI-powered insights.
+A comprehensive personal finance platform to track expenses, manage investments, and build wealth with intelligent insights.
 
 ## 🚀 Features
 
-### Week 1 - MVP (Completed)
+### ✅ Week 1 - Expense Tracker (Completed)
 
-- ✅ User Authentication (Register, Login, JWT)
-- ✅ Expense Tracking (CRUD operations)
-- ✅ Category Management
-- ✅ Date-based Filtering
-- ✅ Expense Summaries (By Category, By Month)
-- ✅ Pagination & Search
+- User Authentication (Register, Login, JWT)
+- Expense Tracking (CRUD operations)
+- Category Management & Filtering
+- Monthly Summaries & Analytics
+- Data Export (CSV)
 
-### Upcoming Features
+### ✅ Week 2 - Investment Tracker (Completed)
 
-- 📊 Investment Tracking
-- 📈 Portfolio Dashboard
-- 🤖 AI-Powered Insights
-- 📱 Mobile Responsive Frontend
-- 📧 Email Notifications
-- 📊 Advanced Analytics
+- Multi-asset Investment Tracking (Stocks, Mutual Funds, FD, Gold, Crypto, Bonds)
+- Real-time Portfolio Valuation
+- Gains/Losses Calculation
+- Asset Allocation Analysis
+- Top/Worst Performers Tracking
+- Platform-wise Breakdown
+- Combined Financial Dashboard
+- Financial Health Score
+- Bulk Operations
+- Complete Data Export
+
+### 🔮 Future Features
+
+- AI-Powered Recommendations
+- Budget Planning & Alerts
+- Tax Optimization
+- Goal-Based Planning
+- Real-time Price Updates
+- Mobile App
 
 ## 🛠️ Tech Stack
 
@@ -106,46 +120,79 @@ uvicorn app.main:app --reload
 
 ### Authentication
 
-| Method | Endpoint             | Description       | Auth Required |
-| ------ | -------------------- | ----------------- | ------------- |
-| POST   | `/api/auth/register` | Register new user | No            |
-| POST   | `/api/auth/login`    | Login user        | No            |
-| GET    | `/api/auth/me`       | Get current user  | Yes           |
+| Method | Endpoint             | Description       |
+| ------ | -------------------- | ----------------- |
+| POST   | `/api/auth/register` | Register new user |
+| POST   | `/api/auth/login`    | Login user        |
+| GET    | `/api/auth/me`       | Get current user  |
 
 ### Expenses
 
-| Method | Endpoint                            | Description        | Auth Required |
-| ------ | ----------------------------------- | ------------------ | ------------- |
-| POST   | `/api/expenses/`                    | Create expense     | Yes           |
-| GET    | `/api/expenses/`                    | Get all expenses   | Yes           |
-| GET    | `/api/expenses/{id}`                | Get single expense | Yes           |
-| PUT    | `/api/expenses/{id}`                | Update expense     | Yes           |
-| DELETE | `/api/expenses/{id}`                | Delete expense     | Yes           |
-| GET    | `/api/expenses/summary/by-category` | Category summary   | Yes           |
-| GET    | `/api/expenses/summary/by-month`    | Monthly summary    | Yes           |
+| Method | Endpoint                            | Description        |
+| ------ | ----------------------------------- | ------------------ |
+| POST   | `/api/expenses/`                    | Create expense     |
+| GET    | `/api/expenses/`                    | Get all expenses   |
+| GET    | `/api/expenses/{id}`                | Get single expense |
+| PUT    | `/api/expenses/{id}`                | Update expense     |
+| DELETE | `/api/expenses/{id}`                | Delete expense     |
+| GET    | `/api/expenses/summary/by-category` | Category summary   |
+| GET    | `/api/expenses/summary/by-month`    | Monthly summary    |
+
+### Investments
+
+| Method | Endpoint                              | Description           |
+| ------ | ------------------------------------- | --------------------- |
+| POST   | `/api/investments/`                   | Create investment     |
+| GET    | `/api/investments/`                   | Get all investments   |
+| GET    | `/api/investments/{id}`               | Get single investment |
+| PUT    | `/api/investments/{id}`               | Update investment     |
+| PATCH  | `/api/investments/{id}/price`         | Update price          |
+| DELETE | `/api/investments/{id}`               | Delete investment     |
+| POST   | `/api/investments/bulk-update-prices` | Bulk price update     |
+
+### Analytics
+
+| Method | Endpoint                                      | Description          |
+| ------ | --------------------------------------------- | -------------------- |
+| GET    | `/api/investments/analytics/asset-allocation` | Asset allocation     |
+| GET    | `/api/investments/analytics/top-performers`   | Top performers       |
+| GET    | `/api/investments/analytics/worst-performers` | Worst performers     |
+| GET    | `/api/investments/analytics/platform-summary` | Platform breakdown   |
+| GET    | `/api/investments/analytics/statistics`       | Detailed statistics  |
+| GET    | `/api/investments/analytics/maturing-soon`    | Maturing investments |
+
+### Dashboard
+
+| Method | Endpoint                      | Description            |
+| ------ | ----------------------------- | ---------------------- |
+| GET    | `/api/dashboard/`             | Complete dashboard     |
+| GET    | `/api/dashboard/health-score` | Financial health score |
+
+### Export
+
+| Method | Endpoint                      | Description               |
+| ------ | ----------------------------- | ------------------------- |
+| GET    | `/api/export/expenses/csv`    | Export expenses CSV       |
+| GET    | `/api/export/investments/csv` | Export investments CSV    |
+| GET    | `/api/export/complete`        | Export complete data JSON |
 
 ## 🧪 Testing
-
-### Manual Testing with Swagger UI
-
-1. Go to http://localhost:8000/docs
-2. Register a new user
-3. Login to get access token
-4. Click "Authorize" and enter: `Bearer <your_token>`
-5. Test all endpoints
 
 ### Create Test Data
 
 ```bash
+# Create expense test data
 python create_test_data.py
+
+# Create investment test data
+python create_investment_test_data.py
+
+# Run complete Week 2 tests
+python test_week2_complete.py
+
+# Generate summary report
+python week2_summary.py
 ```
-
-### Using Thunder Client (VS Code)
-
-1. Install Thunder Client extension
-2. Import the Thunder Client collection
-3. Set environment variables
-4. Run tests
 
 ## 📁 Project Structure
 
@@ -153,220 +200,135 @@ python create_test_data.py
 backend/
 ├── app/
 │   ├── __init__.py
-│   ├── main.py                 # FastAPI application
-│   ├── database.py             # Database configuration
-│   ├── dependencies.py         # Dependency injection
+│   ├── main.py                    # FastAPI application
+│   ├── database.py                # Database configuration
+│   ├── dependencies.py            # Dependency injection
 │   ├── core/
-│   │   ├── config.py          # Settings & configuration
-│   │   └── exceptions.py      # Custom exceptions
+│   │   ├── config.py             # Settings
+│   │   └── exceptions.py         # Custom exceptions
 │   ├── models/
-│   │   ├── user.py            # User model
-│   │   └── expense.py         # Expense model
+│   │   ├── user.py               # User model
+│   │   ├── expense.py            # Expense model
+│   │   └── investment.py         # Investment model
 │   ├── schemas/
-│   │   ├── user.py            # User schemas
-│   │   ├── expense.py         # Expense schemas
-│   │   └── token.py           # Token schemas
+│   │   ├── user.py               # User schemas
+│   │   ├── expense.py            # Expense schemas
+│   │   ├── investment.py         # Investment schemas
+│   │   └── token.py              # Token schemas
 │   ├── routes/
-│   │   ├── auth.py            # Authentication routes
-│   │   └── expenses.py        # Expense routes
+│   │   ├── auth.py               # Authentication routes
+│   │   ├── expenses.py           # Expense routes
+│   │   ├── investments.py        # Investment routes
+│   │   ├── dashboard.py          # Dashboard routes
+│   │   └── export.py             # Export routes
 │   ├── services/
-│   │   ├── auth_service.py    # Auth business logic
-│   │   └── expense_service.py # Expense business logic
+│   │   ├── auth_service.py       # Auth business logic
+│   │   ├── expense_service.py    # Expense logic
+│   │   ├── investment_service.py # Investment logic
+│   │   ├── dashboard_service.py  # Dashboard logic
+│   │   └── export_service.py     # Export logic
 │   └── utils/
-│       ├── security.py        # Security utilities
-│       └── validators.py      # Validation helpers
+│       ├── security.py           # Security utilities
+│       └── validators.py         # Validation helpers
+├── tests/                         # Test files
 ├── requirements.txt
 ├── .env
 ├── .env.example
 ├── .gitignore
-└── README.md
+├── README.md
+├── INVESTMENT_API_DOCS.md
+└── INVESTMENT_SCHEMA.md
 ```
 
 ## 🔐 Security
 
-- Passwords are hashed using bcrypt
-- JWT tokens expire after 30 minutes
-- All sensitive routes require authentication
-- SQL injection prevention through SQLAlchemy ORM
-- Input validation using Pydantic
-- CORS configured for security
-
-## 🐛 Troubleshooting
-
-### Database Connection Error
-
-```bash
-# Check PostgreSQL is running
-# Windows: Check Services
-# Mac/Linux: sudo service postgresql status
-
-# Verify DATABASE_URL in .env
-# Format: postgresql://username:password@localhost:5432/database_name
-```
-
-### Import Errors
-
-```bash
-# Ensure virtual environment is activated
-# Reinstall dependencies
-pip install -r requirements.txt
-```
-
-### Port Already in Use
-
-```bash
-# Use different port
-uvicorn app.main:app --reload --port 8001
-```
-
-### Token Authentication Fails
-
-```bash
-# Check SECRET_KEY in .env
-# Ensure token is passed as: Bearer <token>
-# Token may have expired (default: 30 min)
-```
+- Passwords hashed using bcrypt
+- JWT tokens with expiry
+- Protected routes require authentication
+- SQL injection prevention via ORM
+- Input validation with Pydantic
+- CORS configured
 
 ## 📊 Database Schema
 
 ### Users Table
 
-```sql
-- id: UUID (Primary Key)
-- email: VARCHAR (Unique)
-- full_name: VARCHAR
-- hashed_password: VARCHAR
-- is_active: BOOLEAN
-- is_verified: BOOLEAN
-- created_at: TIMESTAMP
-- updated_at: TIMESTAMP
-```
+- id, email, full_name, hashed_password
+- is_active, is_verified
+- created_at, updated_at
 
 ### Expenses Table
 
-```sql
-- id: UUID (Primary Key)
-- user_id: UUID (Foreign Key)
-- title: VARCHAR(200)
-- amount: NUMERIC(10,2)
-- category: VARCHAR(50)
-- date: DATE
-- payment_method: VARCHAR(50)
-- notes: VARCHAR(500)
-- created_at: TIMESTAMP
-- updated_at: TIMESTAMP
-```
+- id, user_id, title, amount, category
+- date, payment_method, notes
+- created_at, updated_at
 
-## 🎯 Expense Categories
+### Investments Table
 
-- Food
-- Transport
-- Entertainment
-- Shopping
-- Bills
-- Healthcare
-- Education
-- Other
-
-## 💡 Usage Examples
-
-### Register User
-
-```bash
-curl -X POST "http://localhost:8000/api/auth/register" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "user@example.com",
-    "full_name": "John Doe",
-    "password": "SecurePass123!"
-  }'
-```
-
-### Login
-
-```bash
-curl -X POST "http://localhost:8000/api/auth/login" \
-  -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=user@example.com&password=SecurePass123!"
-```
-
-### Create Expense
-
-```bash
-curl -X POST "http://localhost:8000/api/expenses/" \
-  -H "Authorization: Bearer <your_token>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "Grocery Shopping",
-    "amount": 2500.00,
-    "category": "Food",
-    "date": "2025-01-15",
-    "payment_method": "Credit Card",
-    "notes": "Weekly groceries"
-  }'
-```
-
-### Get Expenses with Filters
-
-```bash
-curl "http://localhost:8000/api/expenses/?category=Food&start_date=2025-01-01" \
-  -H "Authorization: Bearer <your_token>"
-```
+- id, user_id, asset_type, asset_name, symbol
+- quantity, purchase_price, current_price
+- purchase_date, maturity_date
+- platform, interest_rate, notes
+- created_at, updated_at
 
 ## 🚀 Deployment
 
-### Local Development
+### Production Setup
 
 ```bash
-uvicorn app.main:app --reload
-```
+# Set environment to production
+DEBUG=False
 
-### Production (Railway/Render)
+# Use PostgreSQL in production
+DATABASE_URL=postgresql://user:pass@host:5432/dbname
 
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
+# Strong secret key
+SECRET_KEY=<generate-strong-key>
+
+# Run with gunicorn
+gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker
 ```
 
 ## 📝 Environment Variables
 
-| Variable                    | Description                  | Example                                  |
-| --------------------------- | ---------------------------- | ---------------------------------------- |
-| DATABASE_URL                | PostgreSQL connection string | postgresql://user:pass@localhost:5432/db |
-| SECRET_KEY                  | JWT secret key               | random-secret-key-here                   |
-| ALGORITHM                   | JWT algorithm                | HS256                                    |
-| ACCESS_TOKEN_EXPIRE_MINUTES | Token expiry time            | 30                                       |
-| APP_NAME                    | Application name             | WealthTrack                              |
-| DEBUG                       | Debug mode                   | True/False                               |
+| Variable                    | Description           | Example          |
+| --------------------------- | --------------------- | ---------------- |
+| DATABASE_URL                | PostgreSQL connection | postgresql://... |
+| SECRET_KEY                  | JWT secret key        | random-secret    |
+| ALGORITHM                   | JWT algorithm         | HS256            |
+| ACCESS_TOKEN_EXPIRE_MINUTES | Token expiry          | 30               |
+| APP_NAME                    | Application name      | WealthTrack      |
+| DEBUG                       | Debug mode            | True/False       |
 
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
+2. Create feature branch
+3. Commit changes
+4. Push to branch
 5. Open Pull Request
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+MIT License
 
 ## 👨‍💻 Author
 
-Your Name - [your.email@example.com](mailto:your.email@example.com)
-
-Project Link: [https://github.com/yourusername/wealthtrack](https://github.com/yourusername/wealthtrack)
+Your Name - your.email@example.com
 
 ## 🙏 Acknowledgments
 
 - FastAPI Documentation
 - SQLAlchemy Documentation
 - Pydantic Documentation
-- Real Python Tutorials
 
 ## 📞 Support
 
-For support, email your.email@example.com or create an issue on GitHub.
+For support, create an issue on GitHub.
 
 ---
 
-Made with ❤️ for better financial management
+**Made with ❤️ for better financial management**
+
+**Version**: 2.0.0  
+**Last Updated**: October 2025

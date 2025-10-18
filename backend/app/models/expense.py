@@ -22,7 +22,7 @@ class Expense(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
     
     # Relationship
-    user = relationship("User", backref="expenses")
+    user = relationship("User", back_populates="expenses")
     
     def __repr__(self):
         return f"<Expense {self.title}: ₹{self.amount}>"
